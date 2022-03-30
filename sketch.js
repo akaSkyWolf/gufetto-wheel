@@ -20,7 +20,7 @@ let button;
 
 function setup() {
     createCanvas(windowWidth * 0.99, windowHeight * 0.99);
-    background(220);
+    frameRate(60);
 
     const minSize = min(width, height);
     circleRadius = ((minSize) / 2) * 0.85;
@@ -34,10 +34,11 @@ function setup() {
 
 function createDaButton() {
     button = createButton('SPIN');
-    const buttonWidth = width * 0.2;
-    button.position((width / 2) - (buttonWidth / 2), height * 0.045);
+    const buttonWidth = circleRadius;
+    const buttonHeight = height * 0.03;
+    button.position((width / 2) - (buttonWidth / 2), (height - circleRadius * 2) / 2 - buttonHeight);
     button.style("font-size: " + (fontSize / 2) + "px; background-color: #C26E6E");
-    button.size(buttonWidth, height * 0.04);
+    button.size(buttonWidth, buttonHeight);
     button.mousePressed(spinDaWheel);
 }
 
@@ -86,6 +87,8 @@ function mouseReleased() {
 
 
 function draw() {
+    clear();
+    background(220);
     translate(width / 2, height / 2);
     strokeWeight(3);
     ellipse(0, 0, circleRadius * 2, circleRadius * 2);
