@@ -2,6 +2,8 @@ const defaultEmojis = [
     "☀️",
     "🌕"
 ]
+const maxSpeed = 0.3;
+
 let characters;
 
 let circleRadius;
@@ -14,14 +16,39 @@ let angleV = 0;
 let lastAngle;
 let lastDiff;
 
+let button;
+
 function setup() {
     createCanvas(windowWidth * 0.99, windowHeight * 0.99);
+    background(220);
+
     const minSize = min(width, height);
     circleRadius = ((minSize) / 2) * 0.85;
     arrowWidth = circleRadius * 0.07;
     fontSize = circleRadius * 0.12111;
 
+    createDaButton();
+
     characters = getCharacters();
+}
+
+function createDaButton() {
+    button = createButton('SPIN');
+    const buttonWidth = width * 0.2;
+    button.position((width / 2) - (buttonWidth / 2), height * 0.045);
+    button.style("font-size: " + (fontSize / 2) + "px; background-color: #C26E6E");
+    button.size(buttonWidth, height * 0.04);
+    button.mousePressed(spinDaWheel);
+}
+
+function spinDaWheel() {
+    if(isZero(angleV)) {
+        angleV = random(maxSpeed / 2, maxSpeed);
+    }
+}
+
+function isZero(number) {
+    return abs(number) < 0.00001;
 }
 
 function getCharacters() {
@@ -43,23 +70,22 @@ function getCharacters() {
 }
 
 function mouseDragged() {
-    if(abs(angleV) < 0.00001) {
+    if(isZero(angleV)) {
         const v = createVector(pmouseX - width / 2, pmouseY - height / 2);
         angle = v.heading();
     }
 }
 
 function mouseReleased() {
-    if( abs(angleV) < 0.00001 &&
-        abs(lastDiff) > 0.00001) {
+    if( isZero(angleV) &&
+        !isZero(lastDiff)) {
         const sign = lastDiff / abs(lastDiff);
-        angleV = sign * min(0.3, abs(lastDiff));
+        angleV = sign * min(maxSpeed, abs(lastDiff));
     }
 }
 
 
 function draw() {
-    background(220);
     translate(width / 2, height / 2);
     strokeWeight(3);
     ellipse(0, 0, circleRadius * 2, circleRadius * 2);
@@ -95,6 +121,12 @@ function adjustSpeed() {
         angleV = max(0, angleV - (0.00005 * deltaTime));
     } else {
         angleV = min(0, angleV + (0.00005 * deltaTime));
+    }
+
+    if(isZero(angleV)) {
+        button.removeAttribute('disabled');
+    } else {
+        button.attribute('disabled', true);
     }
 }
 
