@@ -2,7 +2,7 @@ const defaultEmojis = [
     "☀️",
     "🌕"
 ]
-const maxSpeed = 0.5;
+const maxSpeed = 2;
 
 let characters;
 
@@ -81,7 +81,7 @@ function mouseReleased() {
     if( isZero(angleV) &&
         !isZero(lastDiff)) {
         const sign = lastDiff / abs(lastDiff);
-        angleV = sign * min(maxSpeed, abs(lastDiff));
+        angleV = sign * min(maxSpeed, abs(lastDiff * 2));
     }
 }
 
@@ -111,7 +111,7 @@ function draw() {
         pop();
     }
 
-    angle += angleV;
+    angle += angleV * (deltaTime / 100);
     adjustSpeed();
 
     push();
@@ -121,9 +121,9 @@ function draw() {
 
 function adjustSpeed() {
     if(angleV > 0) {
-        angleV = max(0, angleV - (0.00005 * deltaTime));
+        angleV = max(0, angleV - (0.2 * (deltaTime/1000)));
     } else {
-        angleV = min(0, angleV + (0.00005 * deltaTime));
+        angleV = min(0, angleV + (0.2 * (deltaTime/1000)));
     }
 
     if(isZero(angleV)) {
