@@ -2,7 +2,7 @@ const defaultEmojis = [
     "☀️",
     "🌕"
 ]
-const maxSpeed = 0.3;
+const maxSpeed = 0.5;
 
 let characters;
 
@@ -20,7 +20,7 @@ let button;
 
 function setup() {
     createCanvas(windowWidth * 0.99, windowHeight * 0.99);
-    frameRate(60);
+    frameRate(30);
 
     const minSize = min(width, height);
     circleRadius = ((minSize) / 2) * 0.85;
@@ -44,7 +44,7 @@ function createDaButton() {
 
 function spinDaWheel() {
     if(isZero(angleV)) {
-        angleV = random(maxSpeed / 2, maxSpeed);
+        angleV = random(maxSpeed / 3 * 2, maxSpeed);
     }
 }
 
